@@ -1,0 +1,26 @@
+version: '3.8'
+
+services:
+  backend:
+    build:
+      context: ./backend  # Path to the FastAPI backend directory
+    ports:
+      - "8000:8000"  # Expose backend port
+    networks:
+      - app-network
+    depends_on:
+      - frontend
+
+  frontend:
+    build:
+      context: ./my-app  # Path to the React frontend directory (updated to match your folder name)
+    ports:
+      - "3000:3000"  # Expose frontend port
+    networks:
+      - app-network
+    environment:
+      - REACT_APP_API_URL=http://backend:8000  # Use backend service as API URL
+
+networks:
+  app-network:
+    driver: bridge
